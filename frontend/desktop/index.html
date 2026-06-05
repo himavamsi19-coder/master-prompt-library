@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Master Prompt Library</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div>
+          <h1>Master Prompt Library</h1>
+          <p>Offline local vault</p>
+        </div>
+      </div>
+      <button class="nav active" data-view="library">Library</button>
+      <button class="nav" data-view="workflows">Workflows</button>
+      <button class="nav" data-view="assistant">Assistant</button>
+      <div class="status">
+        <span></span>
+        Local storage on D drive
+      </div>
+    </aside>
+
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Local AI prompt vault</p>
+          <h2>Your master prompts, searchable offline.</h2>
+        </div>
+        <div class="hero-stats">
+          <div><strong id="totalCount">0</strong><span>Prompts</span></div>
+          <div><strong id="workflowCount">0</strong><span>Workflows</span></div>
+          <div><strong id="categoryCount">0</strong><span>Categories</span></div>
+        </div>
+      </section>
+
+      <header class="toolbar">
+        <input id="search" type="search" placeholder="Search title, prompt, tags, category, workflow..." />
+        <select id="categoryFilter"></select>
+        <select id="modelFilter"></select>
+        <select id="sortBy">
+          <option value="updated-desc">Newest updated</option>
+          <option value="created-desc">Newest created</option>
+          <option value="title-asc">Title A-Z</option>
+          <option value="category-asc">Category A-Z</option>
+        </select>
+        <button id="newPrompt" class="primary">New Prompt</button>
+      </header>
+
+      <section id="libraryView" class="view active">
+        <div id="promptGrid" class="grid"></div>
+      </section>
+
+      <section id="workflowsView" class="view">
+        <div id="workflowGrid" class="grid"></div>
+      </section>
+
+      <section id="assistantView" class="view assistant-view">
+        <div class="assistant-intro">
+          <h2>Ask the local librarian</h2>
+          <p>Ask by task, style, model, category, missing keyword, or workflow description. It will choose the closest prompt instead of dumping the whole library.</p>
+          <div class="suggestions">
+            <button data-question="Which prompt should I use for a premium product photo angle?">Product photo angle</button>
+            <button data-question="Find my local storage check prompt">Find storage prompt</button>
+            <button data-question="Show alternatives for cinematic product prompts">Show alternatives</button>
+          </div>
+        </div>
+        <div id="chatLog" class="chat-log"></div>
+        <div class="chat-box">
+          <input id="chatInput" type="text" placeholder="Ask which prompt fits a workflow, task, model, or description..." />
+          <button id="sendChat" class="primary">Send</button>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="promptDialog">
+      <form id="promptForm" method="dialog">
+        <div class="dialog-head">
+          <h2 id="dialogTitle">New Prompt</h2>
+          <button type="button" id="closeDialog" class="icon">X</button>
+        </div>
+        <input id="promptId" type="hidden" />
+        <label>Title<input id="title" required /></label>
+        <label>Prompt<textarea id="content" required></textarea></label>
+        <label>Description<input id="description" /></label>
+        <div class="row">
+          <label>Model<input id="modelType" /></label>
+          <label>Category<input id="category" /></label>
+          <label>Tags<input id="tags" placeholder="comma, separated" /></label>
+        </div>
+        <div class="attachments">
+          <button type="button" id="addImages">Attach workflow images</button>
+          <div id="attachmentList"></div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" id="deletePrompt" class="danger">Delete</button>
+          <span></span>
+          <button type="button" id="cancelDialog">Cancel</button>
+          <button type="submit" class="primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

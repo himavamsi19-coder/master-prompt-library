@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+sqlalchemy
+chromadb
+httpx
+python-multipart
