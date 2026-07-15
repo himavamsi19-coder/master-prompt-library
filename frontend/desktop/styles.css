@@ -193,7 +193,7 @@ button:hover {
   height: 72px;
   border-bottom: 1px solid var(--line);
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) 180px 180px 170px auto;
+  grid-template-columns: minmax(220px, 1fr) 180px 180px 170px auto auto;
   gap: 10px;
   padding: 14px 18px;
 }
@@ -324,6 +324,12 @@ textarea:focus {
   gap: 8px;
 }
 
+.thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .thumb {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -331,6 +337,112 @@ textarea:focus {
   border-radius: 6px;
   border: 1px solid var(--line);
   background: #0a0b0d;
+}
+
+.thumb-more {
+  min-height: 92px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #0a0d0c;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.workflow-card {
+  min-height: 0;
+}
+
+.workflow-steps {
+  display: grid;
+  gap: 12px;
+}
+
+.workflow-step {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #101412;
+}
+
+.workflow-step span {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.workflow-step h4 {
+  margin: 4px 0 8px;
+}
+
+.workflow-step-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.workflow-prompt {
+  white-space: pre-wrap;
+  max-height: 190px;
+  overflow: auto;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #080a09;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.workflow-image-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.workflow-editor-step {
+  display: grid;
+  grid-template-columns: 72px minmax(180px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #101412;
+}
+
+.workflow-editor-step > span {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.workflow-step-actions,
+.step-image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.step-image-list {
+  grid-column: 2 / -1;
+}
+
+.workflow-editor-preview {
+  grid-column: 1 / -1;
+}
+
+.workflow-image {
+  width: 100%;
+  max-height: 460px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #080a09;
 }
 
 .assistant-view {
@@ -467,15 +579,32 @@ label {
 }
 
 #attachmentList {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 8px;
 }
 
 .attachment-chip {
-  padding: 7px 9px;
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px;
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--muted);
   font-size: 12px;
+}
+
+.attachment-chip img {
+  width: 44px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.attachment-chip button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
 }

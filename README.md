@@ -2,6 +2,14 @@
 
 Master Prompt Library is a fully local Windows desktop app for saving, organizing, copying, and finding your best prompts. It includes a local AI assistant powered by free Ollama models, so no paid API or cloud service is required.
 
+## What's New In This Version
+
+- Workflow steps now show the selected prompt text directly inside the workflow view
+- Workflow steps now show visible step images for easier understanding and reuse
+- Copy prompt is available directly from workflow steps
+- Workflow editor now previews the selected prompt and images while editing
+- Desktop app package and installer were updated for the latest local version
+
 ## What This App Does
 
 - Save master prompts locally
@@ -9,6 +17,7 @@ Master Prompt Library is a fully local Windows desktop app for saving, organizin
 - Search, sort, and filter prompts
 - Copy prompts directly from the home screen
 - Add prompt descriptions, categories, tags, model type, and workflow images
+- Build reusable workflows with ordered prompt steps and optional result images for each step
 - Use a local AI assistant to find the best matching prompt in your library
 - Store app data locally on the computer
 - Run as a desktop app, not as a hosted web app

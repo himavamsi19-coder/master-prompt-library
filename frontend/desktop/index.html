@@ -48,6 +48,7 @@
           <option value="category-asc">Category A-Z</option>
         </select>
         <button id="newPrompt" class="primary">New Prompt</button>
+        <button id="newWorkflow">New Workflow</button>
       </header>
 
       <section id="libraryView" class="view active">
@@ -100,6 +101,26 @@
           <span></span>
           <button type="button" id="cancelDialog">Cancel</button>
           <button type="submit" class="primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="workflowDialog">
+      <form id="workflowForm" method="dialog">
+        <div class="dialog-head">
+          <h2 id="workflowDialogTitle">New Workflow</h2>
+          <button type="button" id="closeWorkflowDialog" class="icon">X</button>
+        </div>
+        <input id="workflowId" type="hidden" />
+        <label>Workflow name<input id="workflowTitle" required placeholder="Example: Product image to video" /></label>
+        <label>Description<input id="workflowDescription" placeholder="What this workflow creates" /></label>
+        <div id="workflowSteps"></div>
+        <button type="button" id="addWorkflowStep">Add prompt step</button>
+        <div class="dialog-actions">
+          <button type="button" id="deleteWorkflow" class="danger">Delete</button>
+          <span></span>
+          <button type="button" id="cancelWorkflowDialog">Cancel</button>
+          <button type="submit" class="primary">Save Workflow</button>
         </div>
       </form>
     </dialog>

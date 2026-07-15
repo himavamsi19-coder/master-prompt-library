@@ -1,0 +1,19 @@
+Master Prompt Library - Next Update
+
+Version focus:
+- Better workflow usage
+- Easier prompt copying
+- Better visual preview of step-by-step workflows
+
+New in this update:
+- Workflow tab now shows the actual saved prompt text in each step
+- Workflow tab now shows workflow step images clearly
+- Copy prompt button is available directly inside workflow steps
+- Workflow editor now previews the selected prompt and images before saving
+- Installer and desktop app package were refreshed
+
+Suggested GitHub commit title:
+Update workflow preview, prompt copy, and installer package
+
+Suggested short release description:
+Improved workflow steps with visible prompt text, direct copy support, image previews, and updated desktop installer files.

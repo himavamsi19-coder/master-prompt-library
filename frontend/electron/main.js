@@ -53,7 +53,7 @@ function getSelectedModel() {
 }
 
 function defaultLibrary() {
-  return { version: 1, nextId: 1, prompts: [] };
+  return { version: 2, nextId: 1, nextWorkflowId: 1, prompts: [], workflows: [] };
 }
 
 function readLibrary() {
@@ -63,7 +63,10 @@ function readLibrary() {
   }
 
   try {
-    return JSON.parse(fs.readFileSync(libraryPath, "utf8"));
+    const library = JSON.parse(fs.readFileSync(libraryPath, "utf8"));
+    library.workflows = Array.isArray(library.workflows) ? library.workflows : [];
+    library.nextWorkflowId = Number.isInteger(library.nextWorkflowId) ? library.nextWorkflowId : 1;
+    return library;
   } catch {
     const backup = `${libraryPath}.broken-${Date.now()}`;
     fs.copyFileSync(libraryPath, backup);
@@ -91,6 +94,20 @@ function normalizePrompt(input, id) {
     category: String(input.category || "").trim(),
     modelType: String(input.modelType || "").trim(),
     attachments: Array.isArray(input.attachments) ? input.attachments : [],
+    createdAt: input.createdAt || now,
+    updatedAt: now,
+  };
+}
+
+function normalizeWorkflow(input, id) {
+  const now = new Date().toISOString();
+  return {
+    id,
+    title: String(input.title || "").trim(),
+    description: String(input.description || "").trim(),
+    steps: (Array.isArray(input.steps) ? input.steps : [])
+      .filter((step) => Number.isFinite(Number(step.promptId)))
+      .map((step) => ({ promptId: Number(step.promptId), attachments: Array.isArray(step.attachments) ? step.attachments : [] })),
     createdAt: input.createdAt || now,
     updatedAt: now,
   };
@@ -377,6 +394,50 @@ function setupIpc() {
     return library.prompts.map(withAttachmentUrls);
   });
 
+  ipcMain.handle("workflow:list", () => {
+    const library = readLibrary();
+    return library.workflows.map((workflow) => ({
+      ...workflow,
+      steps: workflow.steps.map((step) => ({
+        ...step,
+        prompt: library.prompts.find((prompt) => prompt.id === step.promptId) || null,
+        attachments: step.attachments.map((attachment) => ({ ...attachment, url: attachmentUrl(attachment.filename) })),
+      })),
+    }));
+  });
+
+  ipcMain.handle("workflow:save", (_event, input) => {
+    if (!input.title || !Array.isArray(input.steps) || !input.steps.length) {
+      throw new Error("A workflow title and at least one prompt step are required.");
+    }
+    const library = readLibrary();
+    const isEdit = Number.isFinite(input.id);
+    if (isEdit) {
+      const index = library.workflows.findIndex((workflow) => workflow.id === input.id);
+      if (index === -1) throw new Error("Workflow not found.");
+      library.workflows[index] = normalizeWorkflow({ ...library.workflows[index], ...input }, input.id);
+    } else {
+      const id = library.nextWorkflowId++;
+      library.workflows.unshift(normalizeWorkflow(input, id));
+    }
+    writeLibrary(library);
+    return library.workflows;
+  });
+
+  ipcMain.handle("workflow:delete", (_event, id) => {
+    const library = readLibrary();
+    const workflow = library.workflows.find((item) => item.id === id);
+    library.workflows = library.workflows.filter((item) => item.id !== id);
+    writeLibrary(library);
+    for (const step of workflow?.steps || []) {
+      for (const attachment of step.attachments || []) {
+        const filePath = path.join(attachmentsDir, attachment.filename);
+        if (fs.existsSync(filePath)) fs.rmSync(filePath, { force: true });
+      }
+    }
+    return library.workflows;
+  });
+
   ipcMain.handle("library:chooseAttachments", async () => {
     const result = await dialog.showOpenDialog(mainWindow, {
       properties: ["openFile", "multiSelections"],
@@ -397,6 +458,14 @@ function setupIpc() {
         url: attachmentUrl(filename),
       };
     });
+  });
+
+  ipcMain.handle("library:deleteAttachment", (_event, filename) => {
+    const safeName = path.basename(String(filename || ""));
+    if (!safeName || safeName !== filename) return false;
+    const filePath = path.join(attachmentsDir, safeName);
+    if (fs.existsSync(filePath)) fs.rmSync(filePath, { force: true });
+    return true;
   });
 
   ipcMain.handle("assistant:ask", async (_event, question) => {

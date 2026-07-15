@@ -11,6 +11,7 @@ The app is packaged as a Windows desktop app. It does not require a paid API or 
 - Prompt cards show useful preview text with direct copy actions
 - Local AI assistant that finds the best matching prompt instead of dumping the whole library
 - Optional image/workflow attachments for each prompt
+- Reusable workflows with ordered prompt steps and optional result images for every step
 - Free Ollama model support
 - Guided installer with system-based model recommendation
 
